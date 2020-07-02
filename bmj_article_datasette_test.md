@@ -18,20 +18,20 @@ I am interested in learning about datasette - an open soruce tool for publishing
 
 In this notebook I'm going to: 
 
-- get some data about 100 BMJ artilces using the crossref API 
+- get some data about 100 BMJ articles using the crossref API 
 - take a selection of the metadata from those articles
 - install Datasette locally 
-- use sqlite_utils to create a local sqlite databse 
+- use sqlite_utils to create a local sqlite database 
 - use datasette running locally to explore and interact with this data 
 - export to CSV from my local instance 
 - upload this CSV to an online instance of Datasette running on Glitch 
-- configre the Glitch instance to enable full text search on some of the fields 
+- configure the Glitch instance to enable full text search on some of the fields 
 
-The final output can be seen running at  [https://watery-alder-carpenter.glitch.me/data/article](). 
+The final output can be seen running at  [https://watery-alder-carpenter.glitch.me/data/article](https://watery-alder-carpenter.glitch.me/data/article). 
 
 Overall it went really well, and I'm excited about Datasette. 
 
-You can grab a copy of this notebook from [https://github.com/IanMulvany/datasette-testing-bmj-articles]().
+You can grab a copy of this notebook from [https://github.com/IanMulvany/datasette-testing-bmj-articles](https://github.com/IanMulvany/datasette-testing-bmj-articles).
 
 # Getting some BMJ article data via the CrossRef API. 
 
@@ -39,7 +39,7 @@ I want to get infomration on 1000 recent papers published by the BMJ, it's fine 
 
 ### Getting the BMJ membership id
 
-The crossref [API documentation is good](https://github.com/CrossRef/rest-api-doc). I can get information on BMJ works using the following endpoint `/members/{member_id}/works`, but first I need to determine the member id for the BMJ. I've usually struggled with this, as previously I've hit the members endpoint and searched through the results in that, but after poking around on the crossref site, I can see that there is a page [https://www.crossref.org/reporting/members-with-open-references/]() where you can search for some members and the result includes the members id. 
+The crossref [API documentation is good](https://github.com/CrossRef/rest-api-doc). I can get information on BMJ works using the following endpoint `/members/{member_id}/works`, but first I need to determine the member id for the BMJ. I've usually struggled with this, as previously I've hit the members endpoint and searched through the results in that, but after poking around on the crossref site, I can see that there is a page [https://www.crossref.org/reporting/members-with-open-references/](https://www.crossref.org/reporting/members-with-open-references/) where you can search for some members and the result includes the members id. 
 
 Using that we find that the BMJ id is `239`.
 
@@ -971,7 +971,7 @@ Now we have our artilce data in a csv file. To be honest, taking a structurd jso
 
 # Installing datasette, and getting started with it
 
-We will follow the docs in [https://datasette.readthedocs.io]() and we will try to install using `pip3`: [https://datasette.readthedocs.io/en/stable/installation.html#install-using-pip]() 
+We will follow the docs in [https://datasette.readthedocs.io](https://datasette.readthedocs.io) and we will try to install using `pip3`: [https://datasette.readthedocs.io/en/stable/installation.html#install-using-pip](https://datasette.readthedocs.io/en/stable/installation.html#install-using-pip) 
 
 `$ sudo pip3 install datasette`  works, I have to use `sudo` shhhh! 
 
@@ -980,7 +980,7 @@ $ datasette --version
 datasette, version 0.45
 ```
 
-OK, we have datasette installed locally, how do we get started with it? Following the instructions on [https://datasette.readthedocs.io/en/stable/getting_started.html#using-datasette-on-your-own-computer]() there are two paths we could follow now. 
+OK, we have datasette installed locally, how do we get started with it? Following the instructions on [https://datasette.readthedocs.io/en/stable/getting_started.html#using-datasette-on-your-own-computer](https://datasette.readthedocs.io/en/stable/getting_started.html#using-datasette-on-your-own-computer) there are two paths we could follow now. 
 
 1. look at the glitch version, and try to upload the CSV file that we have just created. 
 
@@ -990,7 +990,7 @@ I'm not confident that our csv is going to be easy to convert so I'm going to st
 
 ## Getting data into datasetts - using sqlite-utils to push data directly into an sqlite database 
 
-Datasette comes with an ecosystem of tools - [https://datasette.readthedocs.io/en/stable/ecosystem.html](). Many of these are for converting data into a format that datasetts can use. When starting on this earlier today I had assumed that I would need to use `csvs-to-sqlite` to convert a csv file, but `sqlite-utils` also sounds interesting. 
+Datasette comes with an ecosystem of tools - [https://datasette.readthedocs.io/en/stable/ecosystem.html](https://datasette.readthedocs.io/en/stable/ecosystem.html). Many of these are for converting data into a format that datasetts can use. When starting on this earlier today I had assumed that I would need to use `csvs-to-sqlite` to convert a csv file, but `sqlite-utils` also sounds interesting. 
 
 Since I am already in a jupyter notebook, let's give `sqlite-utils` a go! 
 
@@ -1147,18 +1147,13 @@ db["article"].insert_all(info_dicts, pk="DOI")
 
 We have now created a datasette instance with info from 100 BMJ articles. We could create some more tables, e.g. around funder or author info, but let's see if we can get this instance up and running online using the demo glitch project. 
 
-[https://glitch.com]() is a site where you can create sites, or copy or clone sites. It's awesomt. Simon the datasette developer has created a demo datasette instance on glitch. You can clone it here: [https://glitch.com/edit/#!/ringed-succulent-silence?path=README.md%3A1%3A0](). Apparently it works by allowing you to drop a CSV file onto the root directory. Datasette also allows you to download your data as scv, so in principle I should be able to:
+[https://glitch.com](https://glitch.com) is a site where you can create sites, or copy or clone sites. It's awesomt. Simon the datasette developer has created a demo datasette instance on glitch. You can clone it here: [https://glitch.com/edit/#!/ringed-succulent-silence?path=README.md%3A1%3A0](https://glitch.com/edit/#!/ringed-succulent-silence?path=README.md%3A1%3A0). Apparently it works by allowing you to drop a CSV file onto the root directory. Datasette also allows you to download your data as scv, so in principle I should be able to:
 
 - download the data I've just put into my local instance of datasette  
 - clone the glitch project  
 - drop my csv file onto glitch and serve my project
 
-Following these steps I can now serve an example of my data on glitch. Glitch generates a random domain name for each new project, so this project is called [https://watery-alder-carpenter.glitch.me]() and you can inspect the data by clicking into `data` and then into `article`: [https://watery-alder-carpenter.glitch.me/data/article](). 
-
-
-
-
-
+Following these steps I can now serve an example of my data on glitch. Glitch generates a random domain name for each new project, so this project is called [https://watery-alder-carpenter.glitch.me](https://watery-alder-carpenter.glitch.me) and you can inspect the data by clicking into `data` and then into `article`: [https://watery-alder-carpenter.glitch.me/data/article](https://watery-alder-carpenter.glitch.me/data/article).
 
 ### Enabling full text search on glitch 
 
@@ -1185,6 +1180,8 @@ $ sqlite-utils enable-fts data.db article title subject abstract funder_names --
 
 This then created a search field on the article table that searches over title, abstract, subjects and funder names.
 
+Full text seems to turn off after the glitch app goes to sleep, so it probably needs to be baked in to some startups / wake script. 
+
 # Conclusion
 
 I'm really impressed with Datasette. It supports a huge number of features and plugins that I didn't get a chance to look at at all today. These include:
@@ -1197,7 +1194,7 @@ I'm really impressed with Datasette. It supports a huge number of features and p
 - per database and per-table metadata 
 - setting default sort orders 
 - setting which columns can be sorted by 
-- enabling facets via uri e.g. [https://watery-alder-carpenter.glitch.me/data/article?_facet=created]()  
+- enabling facets via uri e.g. [https://watery-alder-carpenter.glitch.me/data/article?_facet=created](https://watery-alder-carpenter.glitch.me/data/article?_facet=created)  
 - support for adding SSO, user accounts or API key  
 
 
